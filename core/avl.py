@@ -1,7 +1,8 @@
 from core.no import NO
 
+
 class AVL:
-  
+
   def __init__(self):
     self.__raiz = None
 
@@ -25,8 +26,8 @@ class AVL:
     A.esq = B.dir
     B.dir = A
 
-    A.__altura = max(self.__altura(A.esq), self.__altura(A.dir)) + 1
-    B.__altura = max(self.__altura(B.esq), A.__altura) + 1
+    A.altura = max(self.__altura(A.esq), self.__altura(A.dir)) + 1
+    B.altura = max(self.__altura(B.esq), A.altura) + 1
 
     return B
 
@@ -35,8 +36,8 @@ class AVL:
     A.dir = B.esq
     B.esq = A
 
-    A.__altura = max(self.__altura(A.dir), self.__altura(A.esq)) + 1
-    B.__altura = max(self.__altura(B.dir), A.__altura) + 1
+    A.altura = max(self.__altura(A.dir), self.__altura(A.esq)) + 1
+    B.altura = max(self.__altura(B.dir), A.altura) + 1
 
     return B
 
@@ -75,6 +76,45 @@ class AVL:
 
     return no
 
+  def remove(self, valor):
+    if not self.__raiz:
+      return print(self)
+    self.__raiz = self.__remove(self.__raiz, valor)
+
+  def __remove(self, no, valor):
+    if not no:
+        return no
+    if no.info > valor:
+      no.esq = self.__remove(no.esq, valor)
+    elif no.info < valor:
+      no.dir = self.__remove(no.dir, valor)
+    else:
+      if not no.esq or not no.dir:
+        no = no.esq if no.esq else no.dir
+      else:
+        t = self.__buscaMenor(no.dir)
+        no.info = t.info
+        no.dir = self.__remove(no.dir, no.info)
+        if self.__balance(no) > 1:
+          no = self.LL(no) if self.__balance(no.esq) >= 0 else self.LR(no)
+          
+    if not no: return no
+        
+    no.altura = max(self.__altura(no.esq), self.__altura(no.dir)) + 1
+    if self.__balance(no) < -1:
+      no = self.RR(no) if self.__balance(no.dir) <= 0 else self.RL(no)
+    if self.__balance(no) > 1:
+      no = self.LL(no) if self.__balance(no.esq) >= 0 else self.LR(no)
+    
+    return no
+      
+
+  def __buscaMenor(self, no):
+    atual = no
+    if atual.esq:
+      atual = self.__buscaMenor(atual.esq)
+    return atual
+
   def busca(self, valor):
     if not self.__raiz:
       return False
@@ -99,7 +139,7 @@ class AVL:
   def emOrdem(self):
     if (self.__raiz != None):
       self.__emOrdem(self.__raiz)
-  
+
   def __repr__(self):
     if not self.__raiz:
       return '< Árvore vazia >'
