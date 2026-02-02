@@ -43,71 +43,76 @@ class AVL:
 
   def LR(self, A):
 
-    A.esq = self.LL(A.esq)
-    A = self.RR(A)
-
-    return A
-
-  def RL(self, A):
-    A.dir = self.RR(A.dir)
+    A.esq = self.RR(A.esq)
     A = self.LL(A)
 
     return A
 
-  def insert(self, valor):
-    self.__raiz = self.__insert(valor, self.__raiz)
+  def RL(self, A):
+    A.dir = self.LL(A.dir)
+    A = self.RR(A)
 
-  def __insert(self, valor, no):
+    return A
+
+  def insert(self, valor, linha):
+    self.__raiz = self.__insert(valor, self.__raiz, linha)
+
+  def __insert(self, valor, no, linha):
     if not no:
-      return NO(valor)
+      return NO(valor, linha)
 
     if valor == no.info:
-      no.freq += 1
+      no.linhas.append(linha)
     elif valor < no.info:
-      no.esq = self.__insert(valor, no.esq)
+      no.esq = self.__insert(valor, no.esq, linha)
       if self.__balance(no) > 1:
-        no = self.LL(no) if no.esq.info > valor else self.LR(no)
+        no = self.LL(no) if self.__balance(no.esq) >= 0 else self.LR(no)
+
     else:
-      no.dir = self.__insert(valor, no.dir)
+      no.dir = self.__insert(valor, no.dir, linha)
       if self.__balance(no) < -1:
-        no = self.RR(no) if no.dir.info < valor else self.RL(no)
+        no = self.RR(no) if self.__balance(no.dir) <= 0 else self.RL(no)
 
     no.altura = max(self.__altura(no.esq), self.__altura(no.dir))+1
 
     return no
 
-  def remove(self, valor):
+  def remove(self, valor, linha):
     if not self.__raiz:
       return print(self)
-    self.__raiz = self.__remove(self.__raiz, valor)
+    self.__raiz = self.__remove(self.__raiz, valor, linha)
 
-  def __remove(self, no, valor):
+  def __remove(self, no, valor, linha):
     if not no:
         return no
     if no.info > valor:
-      no.esq = self.__remove(no.esq, valor)
+      no.esq = self.__remove(no.esq, valor, linha)
     elif no.info < valor:
-      no.dir = self.__remove(no.dir, valor)
+      no.dir = self.__remove(no.dir, valor, linha)
     else:
+      if linha in no.linhas:
+        no.linhas.remove(linha)
+        if len(no.linhas) > 0:
+            return no
       if not no.esq or not no.dir:
         no = no.esq if no.esq else no.dir
       else:
         t = self.__buscaMenor(no.dir)
         no.info = t.info
-        no.dir = self.__remove(no.dir, no.info)
+        no.linhas = t.linhas
+        no.dir = self.__remove(no.dir, no.info, linha)
         if self.__balance(no) > 1:
           no = self.LL(no) if self.__balance(no.esq) >= 0 else self.LR(no)
-          
-    if not no: return no
-        
-    no.altura = max(self.__altura(no.esq), self.__altura(no.dir)) + 1
-    if self.__balance(no) < -1:
-      no = self.RR(no) if self.__balance(no.dir) <= 0 else self.RL(no)
-    if self.__balance(no) > 1:
-      no = self.LL(no) if self.__balance(no.esq) >= 0 else self.LR(no)
     
+    if no:
+      no.altura = max(self.__altura(no.esq), self.__altura(no.dir)) + 1
+
+      if self.__balance(no) < -1:
+        no = self.RR(no) if self.__balance(no.dir) <= 0 else self.RL(no)
+      if self.__balance(no) > 1:
+        no = self.LL(no) if self.__balance(no.esq) >= 0 else self.LR(no)
+
     return no
-      
 
   def __buscaMenor(self, no):
     atual = no
@@ -119,6 +124,11 @@ class AVL:
     if not self.__raiz:
       return False
     return self.__busca(valor, self.__raiz)
+  
+  def buscaME(self, valor):
+    no = self.busca(valor)
+    if not no: return -1
+    return abs(self.__balance(no))
 
   def __busca(self, valor, no):
     if not no:
@@ -129,16 +139,32 @@ class AVL:
       return self.__busca(valor, no.esq)
     else:
       return self.__busca(valor, no.dir)
+    
+  def prefix(self, pref):
+    lista = []
+    self.__prefix(self.__raiz, pref, lista)
+    return lista
+  
+  def __prefix(self, no, pref, lista):
+    if no:
+      if no.info >= pref:
+        self.__prefix(no.esq, pref, lista)
+      if no.info.startswith(pref):
+        lista.append(no.info)
+      if no.info >= pref + 'z':
+        self.__prefix(no.dir, pref, lista)
+        
+  # def maisFreq(self, no, pref)
 
+  def emOrdem(self):
+    if self.__raiz:
+      self.__emOrdem(self.__raiz)
+      
   def __emOrdem(self, no):
     if no:
       self.__emOrdem(no.esq)
-      print("(", no.info, no.freq, ") ", end=' ')
+      print(f"{no.info}: {', '.join(map(str, no.linhas))} - {self.__balance(no)}")
       self.__emOrdem(no.dir)
-
-  def emOrdem(self):
-    if (self.__raiz != None):
-      self.__emOrdem(self.__raiz)
 
   def __repr__(self):
     if not self.__raiz:
