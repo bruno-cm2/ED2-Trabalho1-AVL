@@ -103,4 +103,4 @@ with open('texto.txt') as txt:
 for palavra in palavras:
     avl.insert(*palavra)
 
-fim = time.perf_counter()```
+fim = time.perf_counter()
