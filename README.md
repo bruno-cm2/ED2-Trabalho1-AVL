@@ -104,3 +104,40 @@ for palavra in palavras:
     avl.insert(*palavra)
 
 fim = time.perf_counter()
+```
+#### Saída
+
+```
+------------------
+Índice:
+algoritmo: 1, 3 - 0
+estrutura: 2 - 1
+dados: 2, 4 - -1
+
+Número total de palavras: 1200
+Número total de palavras distintas: 450
+Tempo de construção: 0.012345 segundos
+Número de rotações executadas: 87
+```
+
+### Palavra Mais Frequente
+
+```no = avl.maisFreq()
+print("Palavra mais frequente:", no.info)
+print("Ocorrências:", len(no.linhas))
+```
+
+#### Saída:
+
+```Palavra mais frequente: algoritmo
+Ocorrências: 15
+```
+
+### Busca com Medidor de Equilíbrio
+
+```resultado = avl.buscaME("dados")```
+
+#### Saída possível:
+
+```Medidor de equilíbrio do nó: -2```
+
