@@ -2,6 +2,7 @@
 Índice Remissivo com Árvore AVL
 
 Bruno Caixeta Marques - 12411GIN026
+
 Camilla de F. Sousa Gomes - 12211GIN031
 
 ## Introdução
