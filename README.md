@@ -11,7 +11,7 @@ A solução segue os seguintes passos principais:
 
 1. Leitura do arquivo texto linha a linha.
 
-2. Normalização das palavras (remoção de caracteres não alfabéticos e conversão para minúsculas).
+2. Normalização das palavras (normalização unicode, remoção de caracteres não alfabéticos e conversão para minúsculas).
 
 3. Inserção das palavras distintas na árvore AVL.
 

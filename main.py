@@ -1,5 +1,7 @@
-import time
 from core.avl import AVL
+
+import time
+import unicodedata
 
 avl = AVL()
 
@@ -11,7 +13,8 @@ with open('texto.txt') as txt:
   for index, line in enumerate(txt):
     lista = line.split()
     for string in lista:
-      termo = ''.join(c for c in string if c.isalpha()).lower()
+      nfkd = unicodedata.normalize('NFKD', string)
+      termo = ''.join(c for c in nfkd if c.isalpha()).lower()
       num_palavras +=1
       palavra = (termo, index+1)
       palavras.add(palavra)
