@@ -19,29 +19,35 @@ A solução segue os seguintes passos principais:
 
 - Outras operações auxiliares, como medidor de equilíbrio da árvore e frequência de palavras.
 
+
 ## Classe NO
 
 Representa um nó da árvore AVL.
 
 ### Atributos:
 
-- info: valor armazenado no nó.
+- `info`: valor armazenado no nó.
 
-- linhas: lista com os números das linhas onde o valor aparece.
+- `linhas`: lista com os números das linhas onde o valor aparece.
 
-- altura: altura do nó na árvore.
+- `altura`: altura do nó na árvore.
 
-- esq: referência para o filho esquerdo.
+- `esq`: referência para o filho esquerdo.
 
-- dir: referência para o filho direito.
+- `dir`: referência para o filho direito.
 
 ### Propósito:
 
 Armazenar uma palavra do índice remissivo e suas ocorrências no texto.
 
+
 ## Classe AVL
 
 Classe responsável pela implementação da árvore AVL e das operações do índice.
+
+### Atributos:
+
+`rot`: A quantidade de rotações que a árvore realizou.
 
 ### Inserção
 
@@ -62,3 +68,39 @@ Procura uma palavra na árvore e retorna o nó correspondente ou False caso não
 ### Busca com Medidor de Equilíbrio (ME)
 
 ```buscaME(valor)```
+
+Calcula o Medidor de Equilíbrio (ME) do nó encontrado (A quantidade de elementos do filho da esquerda menos da direita).
+
+### Palavra Mais Frequente
+
+```maisFreq()```
+
+Retorna o valor que aparece em mais linhas.
+
+### Percurso em Ordem
+
+```emOrdem()```
+
+Imprime a árvore em ordem alfabética, contendo a palavra e as linhas em que ela aparece.
+
+## Exemplos de Uso
+
+### Construção do Índice
+
+```from core.avl import AVL
+import time
+
+avl = AVL()
+inicio = time.perf_counter()
+
+with open('texto.txt') as txt:
+    palavras = set()
+    for index, line in enumerate(txt):
+        for string in line.split():
+            termo = ''.join(c for c in string if c.isalpha()).lower()
+            palavras.add((termo, index + 1))
+
+for palavra in palavras:
+    avl.insert(*palavra)
+
+fim = time.perf_counter()```
