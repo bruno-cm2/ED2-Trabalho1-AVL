@@ -1,6 +1,9 @@
 # ED2-Trabalho1-AVL
 Índice Remissivo com Árvore AVL
 
+Bruno Caixeta Marques - 12411GIN026
+Camilla de F. Sousa Gomes - 12211GIN031
+
 ## Introdução
 
 O problema proposto consiste na construção de um índice remissivo a partir de um arquivo de texto, associando cada palavra distinta do texto às linhas em que ela aparece.
