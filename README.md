@@ -135,10 +135,12 @@ Ocorrências: 15
 
 ### Busca com Medidor de Equilíbrio
 
-```resultado = avl.buscaME("dados")
+```
+resultado = avl.buscaME("dados")
 ```
 
 #### Saída possível:
 
-```Medidor de equilíbrio do nó: -2
+```
+Medidor de equilíbrio do nó: -2
 ```
