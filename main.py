@@ -1,6 +1,9 @@
+import time
 from core.avl import AVL
 
 avl = AVL()
+
+inicio = time.perf_counter()
 
 with open('texto.txt') as txt:
   num_palavras = 0
@@ -12,7 +15,10 @@ with open('texto.txt') as txt:
       num_palavras +=1
       palavra = (termo, index+1)
       palavras.add(palavra)
+      
 for palavra in palavras: avl.insert(*palavra)
+
+fim = time.perf_counter()
         
     
 print('-' * 10)
@@ -20,10 +26,6 @@ print('Índice:')
 avl.emOrdem()
 print('Número total de palavras:', num_palavras)
 print('Número total de palavras repetidas:', len(palavras))
-print(', '.join(avl.prefix('aids')))
-print(avl.raiz())
-print(avl.buscaME('aidsman'))
-    
-
-      
-
+print('Número total de palavras repetidas descartadas:', num_palavras - len(palavras))
+print('Tempo de construção:', round(fim - inicio, 6))
+print('Número de rotações executadas:', avl.rot)
